@@ -4,6 +4,12 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 // shim.js
 var shim_default = {
   async fetch(request, env) {
+    if (!env.ASSETS) {
+      return new Response("ASSETS binding not available in local dev", {
+        status: 500,
+        headers: { "Content-Type": "text/plain" }
+      });
+    }
     return await env.ASSETS.fetch(request);
   }
 };
