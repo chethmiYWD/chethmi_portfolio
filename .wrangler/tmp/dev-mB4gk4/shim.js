@@ -4,20 +4,23 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
 // shim.js
 var shim_default = {
   async fetch(request, env) {
-    if (typeof env.ASSETS === "undefined") {
-      const url = new URL(request.url);
-      if (url.pathname === "/") url.pathname = "/index.html";
-      try {
-        const file = await fetch("file://" + __dirname + url.pathname);
-        if (file.status === 404) {
-          return new Response("File not found", { status: 404 });
-        }
-        return file;
-      } catch (err) {
-        return new Response(`Error: ${err.message}`, { status: 500 });
-      }
+    if (env.ASSETS) {
+      return await env.ASSETS.fetch(request);
     }
-    return await env.ASSETS.fetch(request);
+    try {
+      const url = new URL(request.url);
+      let pathname = url.pathname === "/" ? "/index.html" : url.pathname;
+      const file = await fetch(new Request(`https://example.com${pathname}`));
+      if (file.status === 404) {
+        return new Response("File not found", { status: 404 });
+      }
+      return file;
+    } catch (err) {
+      return new Response(`Local dev error: ${err.message}`, {
+        status: 500,
+        headers: { "Content-Type": "text/plain" }
+      });
+    }
   }
 };
 
