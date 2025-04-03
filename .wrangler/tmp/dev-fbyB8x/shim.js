@@ -7,19 +7,17 @@ var shim_default = {
     if (env.ASSETS) {
       return await env.ASSETS.fetch(request);
     }
+    const url = new URL(request.url);
+    let path = url.pathname;
+    if (path === "/") path = "/index.html";
     try {
-      const url = new URL(request.url);
-      let pathname = url.pathname === "/" ? "/index.html" : url.pathname;
-      const file = await fetch(new Request(`https://example.com${pathname}`));
-      if (file.status === 404) {
-        return new Response("File not found", { status: 404 });
-      }
-      return file;
-    } catch (err) {
-      return new Response(`Local dev error: ${err.message}`, {
-        status: 500,
-        headers: { "Content-Type": "text/plain" }
+      const file = await fetch(`file://${process.cwd()}${path}`);
+      return new Response(file.body, {
+        status: file.status,
+        headers: file.headers
       });
+    } catch (err) {
+      return new Response("Not Found", { status: 404 });
     }
   }
 };
