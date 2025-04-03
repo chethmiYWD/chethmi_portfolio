@@ -4,9 +4,3 @@ main = "shim.js"
 
 [site]
 bucket = "./"
-
-# Required for local development
-[dev]
-bindings = [
-  { type = "kv", name = "ASSETS" }
-]
