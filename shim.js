@@ -1,26 +1,44 @@
 export default {
     async fetch(request, env) {
-      // For production with ASSETS binding
-      if (env.ASSETS) {
-        return await env.ASSETS.fetch(request);
+      // Handle OPTIONS requests for CORS preflight
+      if (request.method === "OPTIONS") {
+        return new Response(null, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+            "Access-Control-Max-Age": "86400",
+          },
+        });
       }
-      
-      // For local development
+  
+      // Get the request URL
       const url = new URL(request.url);
-      let path = url.pathname;
-      
+      let pathname = url.pathname;
+  
       // Default to index.html for root path
-      if (path === '/') path = '/index.html';
-      
-      // Create a simple file server for local development
+      if (pathname === "/") pathname = "/index.html";
+  
       try {
-        const file = await fetch(`file://${process.cwd()}${path}`);
-        return new Response(file.body, {
-          status: file.status,
-          headers: file.headers
+        // Try to fetch the asset
+        const response = await env.ASSETS.fetch(
+          new Request(url.toString(), request)
+        );
+  
+        // Add CORS headers to all responses
+        const headers = new Headers(response.headers);
+        headers.set("Access-Control-Allow-Origin", "*");
+  
+        return new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers,
         });
       } catch (err) {
-        return new Response('Not Found', { status: 404 });
+        // Return a 404 response if the asset is not found
+        return new Response("Not Found", { 
+          status: 404,
+          headers: { "Content-Type": "text/plain" }
+        });
       }
     }
   };
