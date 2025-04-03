@@ -321,7 +321,7 @@ img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: url(./assets/Image.jpg) center/cover;
+    background: url(../chethmi_portfolio/assets/Image.jpg) center/cover;
     position: relative;
     z-index: 2;
     border: 10px solid var(--white);
