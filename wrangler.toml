@@ -1,6 +1,0 @@
-name = "chethmi-portfolio"
-compatibility_date = "2025-04-03"
-main = "shim.js"
-
-[site]
-bucket = "./"
