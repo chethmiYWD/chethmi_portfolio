@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../../shim.js"],
+  "sourceRoot": "C:\\Users\\Chethmi\\Desktop\\chethmi_portfolio\\chethmi_portfolio\\.wrangler\\tmp\\deploy-BBN89H",
+  "sourcesContent": ["// Simple shim to serve static assets\r\nexport default {\r\n    async fetch(request, env) {\r\n      return await env.ASSETS.fetch(request);\r\n    }\r\n  };"],
+  "mappings": ";AACA,IAAO,eAAQ;AAAA,EACX,MAAM,MAAM,SAAS,KAAK;AACxB,WAAO,MAAM,IAAI,OAAO,MAAM,OAAO;AAAA,EACvC;AACF;",
+  "names": []
+}

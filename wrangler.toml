@@ -1,6 +1,6 @@
 name = "chethmi-portfolio"
 compatibility_date = "2025-04-03"
+main = "./shim.js"  # We'll create this simple file
 
 [site]
 bucket = "./"
-entry-point = "workers-site"
