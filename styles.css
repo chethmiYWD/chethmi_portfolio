@@ -891,7 +891,7 @@ img {
     gap: 20px;
     margin-bottom: 30px;
     padding: 20px;
-    background-color: var(--light-color);
+    /* background-color: var(--light-color); */
     border-radius: 10px;
     transition: var(--transition);
 }
